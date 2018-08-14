@@ -1,0 +1,23 @@
+control 0
+para_prefix { mpirun -n 64 }
+stages { all }
+dft { qe }
+ppdir { '../' }
+ecut 70
+# SCF Energy tolerance
+toldfe 1.1d-8
+# SCF wftol
+tolwfr 1.1d-15
+# SCF iterations
+nstep 200
+# Static dielectric const
+diemac 100
+mixing { 0.2 }
+# Kpt mesh for screening calculation
+screen.nkpt { 2 2 2 }
+# radius for paw reconstruciton, can be multiple values,only one is used as screening radius as in cnbse.ras
+screen.shells{ 4.0 }
+cnbse.rad{ 4.0 }
+cnbse.spect_range{ 1500  -20  50 }
+scfac 0.8
+core_offset .true.

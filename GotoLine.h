@@ -1,0 +1,13 @@
+#ifndef GOTOLINE_H
+#define GOTOLINE_H
+
+#include <fstream>
+#include <limits>
+std::fstream& GotoLine(std::fstream& file, unsigned int num){
+    file.seekg(std::ios::beg);
+    for(int i=0; i < num - 1; ++i){
+        file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    }
+    return file;
+}
+#endif

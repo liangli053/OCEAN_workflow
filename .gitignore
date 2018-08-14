@@ -1,0 +1,6 @@
+*_mp-*/
+gen_input_VASP/ocean.in
+__pycache__/
+gen_input_MaterProj/
+gen_input_VASP/
+avg_spectra/
