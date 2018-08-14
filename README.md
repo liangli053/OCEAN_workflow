@@ -5,7 +5,7 @@ The input files for OCEAN can either be genrated using Materials Projects databa
 
 To generate input from Materials Projects, an API key is required.<br/> 
    To use, just specify the formula of compounds, or Materials Project ID. This is useful for performing high-throughput calculations.
-   e.g.:  ./Generate_OCEAN_Input.py FeO Li5FeO4 Mn7FeCl3O10 <br/>
+   e.g.:  Gen_OCEAN_from_MaterProj.py FeO Li5FeO4 Mn7FeCl3O10 <br/>
           please specify the centered atom species:<br/>
           Fe<br/>
           spacegroup of FeO is: 139  I4/mmm<br/>
