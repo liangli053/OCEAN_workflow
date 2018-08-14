@@ -4,18 +4,20 @@ run calculation using OCEAN code (http://monalisa.phys.washington.edu/OCEAN/inde
 The input files for OCEAN can either be genrated using Materials Projects database (https://github.com/materialsproject), or VASP output files. <br/>
 
 To generate input from Materials Projects, an API key is required.<br/> 
-   To use, just specify the formula of compounds, or Materials Project ID. This is useful for performing high-throughput calculations.
+   To use, just specify the formula of compounds, or Materials Project ID. This is useful for performing high-throughput calculations.<br/>
+   For a compound with polymorphs, each energetically favorable polymorphic structures (formation energ ~= 0 eV) will be calculated.<br/>
    e.g.:  Gen_OCEAN_from_MaterProj.py FeO Li5FeO4 Mn7FeCl3O10 <br/>
-          please specify the centered atom species:<br/>
-          Fe<br/>
-          spacegroup of FeO is: 139  I4/mmm<br/>
-          spacegroup of Materials Project computed cell is: 139  I4/mmm<br/><br/>
+   please specify the centered atom species:<br/>
+   Fe<br/>
+   spacegroup of FeO is: 139  I4/mmm <br/>
+   spacegroup of Materials Project computed cell is: 139  I4/mmm<br/> 
 
-          spacegroup of Li5FeO4 is:  61  Pbca<br/>
-          spacegroup of Materials Project computed cell is:  61  Pbca<br/><br/>   
+   spacegroup of Li5FeO4 is:  61  Pbca <br/>
+   spacegroup of Materials Project computed cell is:  61  Pbca   <br/>
 
-          spacegroup of Mn7FeCl3O10 is: 225  Fm-3m<br/>  
-          spacegroup of Materials Project computed cell is: 225  Fm-3m<br/><br/>
+   spacegroup of Mn7FeCl3O10 is: 225  Fm-3m  <br/>
+   spacegroup of Materials Project computed cell is: 225  Fm-3m<br/>
+
    The code will automatically figure out the intrinsic core-hole lifetime broadening and Hubbard+U parameters if there are transition metal elements.<br/>
    K-point mesh for Brouillon zone integration and smearing parameters (metal or insulator) will be determined based on Materials Project entries. <br/>
    The space group and multiplicity of the absorbing species will also be checked, to avoid redundant BSE calculations on atoms with identical Wyckoff positions.<br/>
