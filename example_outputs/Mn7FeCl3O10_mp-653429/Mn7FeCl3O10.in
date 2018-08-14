@@ -1,0 +1,125 @@
+control 0
+para_prefix { mpirun -n 64 }
+# which stages of the calculation to run (one or more of): paw, dft, prep, screen, bse, all
+stages { all }
+dft { qe }
+# pseudo location
+ppdir { '../' }
+# Kinetic Energy cutoff (in Ry for QE)
+ecut 70
+# SCF Energy tolerance
+toldfe 1.1d-8
+# SCF wftol
+tolwfr 1.1d-15
+# SCF iterations
+nstep 250
+# Static dielectric const (taken from experiments)
+diemac
+# SCF mixing
+mixing { 0.2 }
+# Kpt mesh for screening calculation
+screen.nkpt { 2 2 2 }
+# radius for paw reconstruciton, can be multiple values,only one is used as screening radius as in cnbse.ras
+screen.shells{ 4.0 }
+cnbse.rad{ 4.0 }
+# The code will figure out a good plot range
+cnbse.spect_range{ 1500  -20  50 }
+#Scaling Factor
+scfac 0.8
+# Ask OCEAN to calculate shifts for all the requested sites
+core_offset .true.
+# number of element types
+ntypat  4
+znucl  { 25 26 17 8 }
+# number of total atoms
+natom  42
+pp_list  { 25-mn.lda.fhi  26-fe.lda.fhi  17-cl.lda.fhi  08-o.lda.fhi }
+# occupation, 1 or 3(smearing)
+occopt  1
+fband  0.4
+# opf control files
+opf.fill  { 26 Fe.fill }
+opf.opts  { 26 Fe.opts }
+acell  { 1.889725989  1.889725989  1.889725989 }
+rprim  {
+      8.174354400000   0.000017660000   4.719487010000
+      2.724798450000   7.706852510000   4.719492370000
+      0.000019700000   0.000020620000   9.438938850000
+}
+typat  { 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 }
+xred  {
+      0.000001110000   0.351360840000   0.648634500000
+      0.648632150000   0.000003360000   0.351362200000
+      0.000002050000   0.351363270000  -0.000000810000
+      0.000001260000   0.000001040000   0.648633900000
+      0.000002100000   0.648634040000   0.351363050000
+      0.351362020000   0.648633300000   0.000002110000
+      0.351362320000   0.000001580000   0.000001730000
+      0.351363760000   0.000002600000   0.648634520000
+      0.500000810000   0.500000560000   0.500001190000
+      0.648634740000   0.000002060000   0.000001670000
+      0.000003390000   0.648633780000   0.000004230000
+      0.648634230000   0.351360920000   0.000002660000
+      0.000002860000   0.000001830000   0.351360680000
+     -0.000000550000   0.000005410000   0.999998430000
+      0.249999050000   0.249997860000   0.250001110000
+      0.749998030000   0.750001780000   0.749998560000
+      0.303491470000   0.303490860000   0.696508950000
+      0.696508790000   0.696507160000   0.303491440000
+      0.696508830000   0.303490590000   0.696509200000
+      0.696509350000   0.303490720000   0.303490110000
+      0.303489470000   0.696509550000   0.696509770000
+      0.303491430000   0.696509850000   0.303489940000
+      0.903718990000   0.903718970000   0.596281210000
+      0.903719170000   0.596280010000   0.596281490000
+      0.899985760000   0.899985440000   0.300042440000
+      0.596280700000   0.903719070000   0.596280340000
+      0.596281910000   0.903719200000   0.903719090000
+      0.096286410000   0.403712540000   0.096286330000
+      0.096285470000   0.096286470000   0.403713040000
+      0.596281090000   0.596280180000   0.903718710000
+      0.699948420000   0.100017860000   0.100017700000
+      0.300042650000   0.899984660000   0.899985480000
+      0.100017270000   0.100017210000   0.100016680000
+      0.403713860000   0.096286730000   0.403714250000
+      0.903719070000   0.596282160000   0.903719440000
+      0.100017230000   0.100016950000   0.699948780000
+      0.403714020000   0.403713300000   0.096287020000
+      0.899985170000   0.300043070000   0.899985230000
+      0.096286610000   0.403713470000   0.403714060000
+      0.899985700000   0.899985830000   0.899985850000
+      0.100018380000   0.699948270000   0.100017980000
+      0.403713440000   0.096285630000   0.096285710000
+}
+# Kpt mesh for ground state density calculation
+ngkpt { 3 3 3 }
+# Kpt mesh for final states
+nkpt  { }
+ # Kpt mesh for screening calculation
+screen.nkpt  { 2 2 2 }
+# Total bands for final states
+nbands
+# Total bands for screening calculation
+screen.nbands
+# edge information # number of edges to calculate # atom number, n, l
+nedges  1
+edges {
+     15   1   0   # multiplicity:  2
+}
+# Starting Magnetization Values for QE
+smag{
+starting_magnetization(1)=0
+starting_magnetization(2)=0
+starting_magnetization(3)=0
+starting_magnetization(4)=0
+}
+# Spectral broadening in eV
+cnbse.broaden   1.25
+#LDA+U for QE
+ldau{
+lda_plus_u=.true. ,
+Hubbard_U(1)=4.0,
+Hubbard_U(2)=4.6,
+Hubbard_U(3)=0,
+Hubbard_U(4)=0
+}
