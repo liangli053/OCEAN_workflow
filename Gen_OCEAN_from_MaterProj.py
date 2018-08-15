@@ -30,9 +30,9 @@ ctr_atom = input("please specify the centered atom species:\n")
 for i in range(len(Mater2Do)):
   curr_Mater = list(Mater2Do[i])
   for j in range(len(curr_Mater)):
-    if (j == 0) & (curr_Mater[j].islower()):
+    if (j == 0) and (curr_Mater[j].islower()):
       curr_Mater[j]=curr_Mater[j].upper()
-    elif (curr_Mater[j].islower()) & (curr_Mater[j-1].isdigit()):
+    elif (curr_Mater[j].islower()) and (curr_Mater[j-1].isdigit()):
       curr_Mater[j]=curr_Mater[j].upper()
   Mater2Do[i] ="".join(curr_Mater)
 
