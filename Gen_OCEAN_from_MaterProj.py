@@ -5,6 +5,7 @@ import numpy as np
 from sys import argv, exit
 from pymatgen.ext.matproj import MPRester as MP
 from MPEntry import MPEntry
+from write_to_file import write_to_file
 
 """ Main function to generate input files for X-ray core-level spectra computation.
     Compounds to compute are read from stdin.
@@ -15,21 +16,21 @@ from MPEntry import MPEntry
 
     Arguments:
     K_broad : dict {str : float}
-      K-edge broadening.
+      Natural width K edge.
+      reference: Krause et al., J. Phys. Chem. Ref. Data. 8, 329-338 (1979)
 
     U_eff : dict {str : float}
-      Hubbard U.
+      Hubbard U values for transition metals.
+      reference: Curtarolo et al., Comput. Mater. Sci. 58, 218-226(2012).
+
+    ctr_atom : str
+      Absorption atom species.
 
     Mater2Do : list [str]
       Formulas of compounds to be computed (can be more than 1).
-      Can be input interactively.
 
     MP_IDs : list [str]
-      Materials project ID of compounds (formation eng == 0) to be computed.
-
-    ctr_atom :
-
-    all_compounds_info :
+      Materials project ID of compounds (with zero formation energies) to be computed.
 """
 
 here = os.getcwd()
@@ -61,27 +62,24 @@ for formula in Mater2Do:
       MP_IDs.append(i['material_id'])
 
 # Get data from Materials Project database
-all_compounds_info = []  # list of MPEntry class
-for i in MP_IDs:
-  curr_Mater = MPEntry(i, ctr_atom)
-  all_compounds_info.append(curr_Mater)
-
 # Write OCEAN input file
-here = os.getcwd()
-for i in all_compounds_info:
+for i in MP_IDs:
+  compound = MPEntry(i, ctr_atom)
   os.chdir(here)
-  new_folder = i.formula + '_' + i.ID
-  new_file = i.formula + '.in'
+  new_folder = compound.formula + '_' + compound.ID
+  new_file = compound.formula + '.in'
   os.mkdir(new_folder)
   os.chdir(here + '/' + new_folder)
+  # OCEAN.head strores the in-common parameters for every spectrum calculation
   shutil.copy(ocean_tmplate_loc + '/' + "OCEAN.head", new_file)
   fout = open(new_file, "a")
-  i.write_to_file(fout, ctr_atom)
+  write_to_file(compound, fout, ctr_atom)
   fout.write("# Spectral broadening in eV\n")
   fout.write("cnbse.broaden   " + str(K_broad[ctr_atom]) + '\n')
   fout.write("#LDA+U for QE\nldau{\nlda_plus_u=.true. ")
-  j = 1
-  for j in range(0, i.ntypat):
-    fout.write(",\nHubbard_U(" + str(j + 1) + ")=" + str(U_eff.get(i.elements[j], 0)))
+  # write Hubbard U parameter, if not transition metal, then U = 0
+  ntypat = compound.structure.ntypesp
+  for j in range(ntypat):
+    fout.write(",\nHubbard_U(" + str(j + 1) + ")=" + str(U_eff.get(compound.elements[j], 0)))
   fout.write('\n}\n')
   fout.close()
