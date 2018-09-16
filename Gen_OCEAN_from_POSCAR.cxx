@@ -10,6 +10,8 @@
 using namespace std;
 
 int main() {
+  // Use VASP files (POSCAR or CONTCAR) to generate OCEAN input file.
+  //CONTCAR is used if it exists, otherwise POSCAR is used.
   bool POSCAR_exists = false;
   bool CONTCAR_exists = false;
   string input_file;
@@ -28,20 +30,20 @@ int main() {
 // read from POSCAR, if CONTCAR exists, read CONTCAR
   if (ifstream("POSCAR")) { POSCAR_exists = 1; input_file = "POSCAR";}
   if (ifstream("CONTCAR")) { CONTCAR_exists = 1; input_file = "CONTCAR";}
-  if (POSCAR_exists == false && CONTCAR_exists == false) {cout << "no POSCAR or CONTCAR are found" << endl;} 
+  if (POSCAR_exists == false && CONTCAR_exists == false) {cout << "no POSCAR or CONTCAR are found" << endl;}
   fstream read_from(input_file.c_str());
 // read lattice parameters
   GotoLine(read_from, line_lattice_st);
   for (int i=1; i<=3; ++i) {
     getline(read_from, line);
     lattice.push_back(line);
-  }; 
+  };
 // read atomic species form Line 6
   GotoLine(read_from, line_atm_species);
   getline(read_from, line);
   istringstream ss(line);
   while (ss >> word) { atm_species.push_back(word); }
-// read atom numbers fro line 7  
+// read atom numbers fro line 7
   GotoLine(read_from, line_atm_nums);
   getline(read_from, line);
   istringstream ss1(line);
@@ -70,20 +72,20 @@ int main() {
 // wirte to "ocean.in"
   cout << "Don't forget to adjust pp_list and edges" << endl;
   ofstream write_to("ocean.in");
-  write_to << "control 0" << endl 
-           << "para_prefix { mpiexec -n 160 }" << endl 
-           << "# which stages of the calculation to run (one or more of): paw, dft, prep, screen, bse, all" << endl 
-           << "stages { all }" << endl 
-           << "dft { abinit }" << endl 
-           << "# Ntypes of atoms" << endl 
-           << "ntypat " << atm_species.size() << endl 
-           << "# Z num for types" << endl 
-           << "znucl { 29 8 }" << endl 
-           << "# pseudo location" << endl 
-           << "ppdir { '/lcrc/project/PhotoCu2O/OCEAN/bulk' }" << endl 
+  write_to << "control 0" << endl
+           << "para_prefix { mpiexec -n 160 }" << endl
+           << "# which stages of the calculation to run (one or more of): paw, dft, prep, screen, bse, all" << endl
+           << "stages { all }" << endl
+           << "dft { abinit }" << endl
+           << "# Ntypes of atoms" << endl
+           << "ntypat " << atm_species.size() << endl
+           << "# Z num for types" << endl
+           << "znucl { 29 8 }" << endl
+           << "# pseudo location" << endl
+           << "ppdir { '/lcrc/project/PhotoCu2O/OCEAN/bulk' }" << endl
            << "# pseudopotentials"  << endl
-           << "pp_list{  29-Cu.LDA.fhi" << endl 
-           << "          08-O.LDA.fhi }" << endl 
+           << "pp_list{  29-Cu.LDA.fhi" << endl
+           << "          08-O.LDA.fhi }" << endl
            << "# Kinetic Energy cutoff (in Ry for QE)" << endl
            << "ecut 70" << endl
            << "# SCF Energy tolerance" << endl
@@ -127,17 +129,17 @@ int main() {
   for (auto i = lattice.begin(); i!=lattice.end(); ++i) {
     write_to << *i << endl;
   };
-  write_to << "}" << endl 
-           << "# N atoms in unit cell" << endl 
-           << "natom " << tot_atm_num << endl 
-           << "# Type of each atom" << endl 
+  write_to << "}" << endl
+           << "# N atoms in unit cell" << endl
+           << "natom " << tot_atm_num << endl
+           << "# Type of each atom" << endl
            << "typat { ";
 // write typat
   for (auto i = typat.begin(); i!=typat.end(); ++i) {
     write_to << *i << " ";
   };
-  write_to <<"}" << endl 
-           <<"# Relative positions of atoms" << endl 
+  write_to <<"}" << endl
+           <<"# Relative positions of atoms" << endl
            <<"xred {" << endl;
 // write atom coordinates
   for (auto i = atm_coords.begin(); i!=atm_coords.end(); ++i) {
@@ -148,13 +150,13 @@ int main() {
     };
     write_to << endl;
   };
-  write_to << "}" << endl << endl 
-           << "fband 2" << endl 
+  write_to << "}" << endl << endl
+           << "fband 2" << endl
            << "# Total bands for final states"  << endl
            << "nbands 900" << endl
            << "# Total bands for screening wave functions" << endl
-           << "paw.nbands 1600" << endl 
-           << "# edge information # number of edges to calculate # atom number, n quantum number, l quantum number" << endl 
-           << "nedges 1" << endl 
+           << "paw.nbands 1600" << endl
+           << "# edge information # number of edges to calculate # atom number, n quantum number, l quantum number" << endl
+           << "nedges 1" << endl
            << "edges { 1 1 0 }" << endl;
 }

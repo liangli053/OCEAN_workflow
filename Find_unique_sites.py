@@ -3,7 +3,9 @@ from pymatgen.symmetry.analyzer import SpacegroupAnalyzer as SpGA
 import numpy as np
 
 class Find_unique_sites:
+  """ Return the atomic sites Wyckoff positions, to avoid
 
+  """
   def __init__(self, MP_ID, ctr_atom):
     self.structure = MP().get_structures(MP_ID)[0]
     self.ctr_atom = ctr_atom
@@ -15,8 +17,7 @@ class Find_unique_sites:
     self.uniq_ctr_atom_pos = []
     self.get_uniq_ctr_atom_coords()
 
-##----------------------------------------------------------------------------------------------------
-##-----------find the coordinates, multiplicity and postion of the unique absorbing atoms-------------
+# find the coordinates, multiplicity and postion of the unique absorbing atoms
   def get_uniq_ctr_atom_coords(self):
     symm_struct = self.symm_finder.get_symmetrized_structure()
     if not np.array_equal(self.frac_coord, symm_struct.frac_coords):
