@@ -1,3 +1,9 @@
+/*
+ * Generate input file for X-ray core-level spectra calculation.
+ * Take VASP POSCAR of CONTCAR file as input.
+ * All the strucutre-related flags will be parsed and filled in.
+ * Manual input may also be needed after the file is generated.
+ */
 #include <algorithm>
 #include <iomanip>
 #include <numeric>
